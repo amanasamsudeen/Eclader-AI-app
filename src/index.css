@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    overscroll-behavior: none;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Animations & Keyframes from Stitch */
+@keyframes scanline {
+  0% { transform: translateY(-100%); opacity: 0; }
+  15% { opacity: 0.85; }
+  85% { opacity: 0.85; }
+  100% { transform: translateY(380%); opacity: 0; }
+}
+
+@keyframes pingSlow {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+@keyframes floatAura {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(25px, -20px) scale(1.08); }
+}
+
+@keyframes floatAuraReverse {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-20px, 20px) scale(1.1); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.04); }
+}
+
+@keyframes beamFlow {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes shimmerEffect {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.animate-scanline {
+  animation: scanline 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-ping-slow {
+  animation: pingSlow 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.animate-aura-1 {
+  animation: floatAura 12s ease-in-out infinite;
+}
+
+.animate-aura-2 {
+  animation: floatAuraReverse 15s ease-in-out infinite;
+}
+
+.animate-beam-flow {
+  background-size: 200% 100%;
+  animation: beamFlow 4s linear infinite;
+}
+
+.shimmer-trigger:hover .shimmer-bar {
+  animation: shimmerEffect 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@media print {
+  header, footer, button, .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}

@@ -1,0 +1,96 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isTechnician() {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'technician';
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      // Allow users to create their initial profile document
+      allow create: if isOwner(userId) 
+        && request.resource.data.uid == userId
+        && request.resource.data.role in ['consumer', 'technician'];
+      // Prevent changing UID or promoting roles without authorization
+      allow update: if isOwner(userId) 
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.role == resource.data.role;
+      allow delete: if false;
+    }
+
+    // Devices
+    match /devices/{deviceId} {
+      allow read: if isAuthenticated() && (
+        resource.data.ownerUid == request.auth.uid ||
+        resource.data.assignedTechnicianUid == request.auth.uid ||
+        isTechnician()
+      );
+      allow create: if isAuthenticated() && request.resource.data.ownerUid == request.auth.uid;
+      allow update: if isAuthenticated() && (
+        // Owner can update route or details without changing ownerUid
+        (resource.data.ownerUid == request.auth.uid && request.resource.data.ownerUid == resource.data.ownerUid) ||
+        // Assigned technician can update status
+        resource.data.assignedTechnicianUid == request.auth.uid ||
+        isTechnician()
+      );
+      allow delete: if isAuthenticated() && resource.data.ownerUid == request.auth.uid;
+    }
+
+    // AI Assessments
+    match /aiAssessments/{assessmentId} {
+      allow read: if isAuthenticated() && (
+        resource.data.ownerUid == request.auth.uid ||
+        isTechnician()
+      );
+      allow create: if isAuthenticated() && request.resource.data.ownerUid == request.auth.uid;
+      allow update: if isAuthenticated() && resource.data.ownerUid == request.auth.uid;
+      allow delete: if false;
+    }
+
+    // Technician directory
+    match /technicians/{technicianId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && (
+        request.auth.uid == technicianId ||
+        request.auth.uid == request.resource.data.uid
+      );
+    }
+
+    // Inspection Quotes
+    match /quotes/{quoteId} {
+      allow read: if isAuthenticated() && (
+        resource.data.ownerUid == request.auth.uid ||
+        resource.data.technicianUid == request.auth.uid
+      );
+      // Only technicians can create quotes
+      allow create: if isAuthenticated() && request.resource.data.technicianUid == request.auth.uid;
+      // Technician can update quote details; Consumer can approve/reject
+      allow update: if isAuthenticated() && (
+        (resource.data.technicianUid == request.auth.uid) ||
+        (resource.data.ownerUid == request.auth.uid && request.resource.data.technicianUid == resource.data.technicianUid)
+      );
+      allow delete: if false;
+    }
+
+    // Device Status History / Milestones
+    match /deviceStatusHistory/{historyId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Eclader AI",
+  "description": "Autonomous Circular Electronics Intelligence & e-waste triage platform for Sri Lanka.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

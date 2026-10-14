@@ -1,0 +1,158 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role differentiation between consumers and verified technicians.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth user ID" },
+        "name": { "type": "string", "maxLength": 100, "description": "Full name of the user" },
+        "email": { "type": "string", "format": "email", "description": "Email address" },
+        "role": { "type": "string", "enum": ["consumer", "technician"], "description": "Platform role" },
+        "location": { "type": "string", "maxLength": 100, "description": "District or municipal zone" },
+        "phone": { "type": "string", "maxLength": 30, "description": "Contact phone number" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of user creation" }
+      },
+      "required": ["uid", "name", "email", "role", "createdAt"]
+    },
+    "Device": {
+      "title": "Device",
+      "description": "Electronic hardware device submitted for circular economy triage.",
+      "type": "object",
+      "properties": {
+        "ownerUid": { "type": "string", "description": "Owner user UID" },
+        "deviceName": { "type": "string", "maxLength": 150, "description": "Name or model title of the hardware" },
+        "deviceCategory": { "type": "string", "enum": ["Laptop", "Smartphone", "Tablet", "Desktop PC", "Monitor", "Audio/Appliance"] },
+        "tagNumber": { "type": "string", "description": "Unique municipal inventory tag (e.g. ECL-CMB-2026-XXX)" },
+        "imageUrl": { "type": "string", "description": "Direct URL or data representation of intake photograph" },
+        "lifecycleAge": { "type": "string", "description": "Approximate lifecycle age" },
+        "powerState": { "type": "string", "description": "Operational power state" },
+        "knownIssues": { "type": "string", "description": "Reported flaws or exterior damage description" },
+        "selectedRoute": { "type": "string", "enum": ["repair", "reuse_resale", "donation", "parts_recovery", "recycling"] },
+        "assignedTechnicianUid": { "type": "string", "description": "UID of assigned technician bench" },
+        "currentStatus": { 
+          "type": "string", 
+          "enum": [
+            "intake_pending", 
+            "ai_assessed", 
+            "route_selected", 
+            "technician_assigned", 
+            "physical_inspection_pending", 
+            "quote_submitted", 
+            "repair_in_progress", 
+            "quality_check", 
+            "completed", 
+            "recycled"
+          ] 
+        },
+        "createdAt": { "type": "string", "description": "ISO timestamp of creation" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of last update" }
+      },
+      "required": ["ownerUid", "deviceName", "deviceCategory", "currentStatus", "createdAt"]
+    },
+    "AiAssessment": {
+      "title": "AiAssessment",
+      "description": "Optical Computer Vision analysis produced by Google Gemini.",
+      "type": "object",
+      "properties": {
+        "deviceId": { "type": "string", "description": "Associated device ID" },
+        "ownerUid": { "type": "string", "description": "Owner user UID" },
+        "deviceCategory": { "type": "string" },
+        "identifiedHardwareModel": { "type": "string" },
+        "visibleCondition": { "type": "string" },
+        "visibleDamage": { "type": "string" },
+        "identificationConfidence": { "type": "number" },
+        "limitations": { "type": "string" },
+        "recommendedRoute": { "type": "string" },
+        "alternativeRoutes": { "type": "string" },
+        "reasoning": { "type": "string" },
+        "safetyNotes": { "type": "string" },
+        "co2eAvoidanceKg": { "type": "number" },
+        "recoverableMassKg": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["deviceId", "ownerUid", "recommendedRoute", "createdAt"]
+    },
+    "Technician": {
+      "title": "Technician",
+      "description": "Accredited electronics technician lab profile.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth user ID of technician" },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "businessName": { "type": "string", "maxLength": 120 },
+        "specialties": { "type": "string" },
+        "serviceArea": { "type": "string", "maxLength": 100 },
+        "availability": { "type": "string" },
+        "phone": { "type": "string" },
+        "rating": { "type": "number" },
+        "completedJobsCount": { "type": "number" },
+        "hourlyLaborRateLkr": { "type": "number" },
+        "profileStatus": { "type": "string", "enum": ["active", "pending_verification", "suspended"] }
+      },
+      "required": ["uid", "displayName", "serviceArea", "profileStatus"]
+    },
+    "Quote": {
+      "title": "Quote",
+      "description": "Technician physical multimeter inspection and itemized repair quotation.",
+      "type": "object",
+      "properties": {
+        "deviceId": { "type": "string" },
+        "ownerUid": { "type": "string" },
+        "technicianUid": { "type": "string" },
+        "technicianName": { "type": "string" },
+        "inspectionFindings": { "type": "string" },
+        "repairDescription": { "type": "string" },
+        "multimeterStatus": { "type": "string" },
+        "batteryHealthPercent": { "type": "number" },
+        "partsCost": { "type": "number" },
+        "labourCost": { "type": "number" },
+        "totalEstimatedCost": { "type": "number" },
+        "estimatedDuration": { "type": "string" },
+        "quoteStatus": { "type": "string", "enum": ["pending", "approved", "rejected", "clarification_requested"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["deviceId", "ownerUid", "technicianUid", "totalEstimatedCost", "quoteStatus", "createdAt"]
+    },
+    "DeviceStatusHistory": {
+      "title": "DeviceStatusHistory",
+      "description": "Immutable custody event log and state transitions for tracked hardware.",
+      "type": "object",
+      "properties": {
+        "deviceId": { "type": "string" },
+        "status": { "type": "string" },
+        "description": { "type": "string" },
+        "updatedBy": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["deviceId", "status", "description", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Individual consumer and technician profile documents."
+    },
+    "/devices/{deviceId}": {
+      "schema": { "$ref": "#/entities/Device" },
+      "description": "Registered devices undergoing circular lifecycle triage."
+    },
+    "/aiAssessments/{assessmentId}": {
+      "schema": { "$ref": "#/entities/AiAssessment" },
+      "description": "Optical triage records generated by Gemini Computer Vision."
+    },
+    "/technicians/{technicianId}": {
+      "schema": { "$ref": "#/entities/Technician" },
+      "description": "Certified bench technician profiles and workshop capabilities."
+    },
+    "/quotes/{quoteId}": {
+      "schema": { "$ref": "#/entities/Quote" },
+      "description": "Physical inspection reports and itemized repair quotes."
+    },
+    "/deviceStatusHistory/{historyId}": {
+      "schema": { "$ref": "#/entities/DeviceStatusHistory" },
+      "description": "Custody timeline milestones for each device."
+    }
+  }
+}
