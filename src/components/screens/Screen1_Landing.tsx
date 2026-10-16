@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { EcladerLogo } from '../common/EcladerLogo';
 
 export const Screen1_Landing: React.FC = () => {
   const { setActiveScreen, currentUser, setCurrentUser, users } = useApp();
+  const [activePillar, setActivePillar] = useState<'vision' | 'bench' | 'salvage' | 'compliance'>('vision');
 
   return (
     <div className="w-full bg-[#faf8ff] text-[#131b2e] font-sans antialiased overflow-x-hidden">
@@ -29,7 +30,7 @@ export const Screen1_Landing: React.FC = () => {
                 <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-[#005f48] opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#005f48]"></span>
               </span>
-              Live Stream: Gemini 1.5 Multimodal v2.4
+              Live Stream: Gemini Multimodal Intelligence
             </span>
           </div>
         </div>
@@ -472,81 +473,507 @@ export const Screen1_Landing: React.FC = () => {
         </div>
       </section>
 
-      {/* Core Strategic Features Grid */}
-      <section className="w-full py-16 bg-[#f2f3ff]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-10">
-          <div className="flex flex-col items-start max-w-2xl mb-8">
-            <span className="px-3 py-1 rounded-full bg-[#dae2fd] text-[#49607e] text-xs font-semibold uppercase tracking-wider mb-2 font-['Plus_Jakarta_Sans']">
-              Engineered for Municipal Resilience
+      {/* Enterprise Circular Infrastructure Built on Vision AI - Modern Asymmetric Bento Layout */}
+      <section className="w-full py-20 bg-gradient-to-b from-[#f2f3ff] via-[#faf8ff] to-[#f2f3ff] relative overflow-hidden border-y border-[#bdc9c2]/30">
+        
+        {/* Ambient background glows */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#95f5d2]/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#005f48]/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-10 relative z-10 space-y-12">
+          
+          {/* Section Header with System Stats Header */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-8 border-b border-[#bdc9c2]/40">
+            <div className="max-w-3xl space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#005f48]/10 text-[#005f48] text-xs font-bold uppercase tracking-wider font-['Plus_Jakarta_Sans'] border border-[#005f48]/20">
+                <span className="material-symbols-outlined text-sm">precision_manufacturing</span>
+                <span>Municipal & Enterprise Architecture</span>
+              </div>
+              
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#131b2e] tracking-tight font-['Plus_Jakarta_Sans'] leading-tight">
+                Enterprise Circular Infrastructure Built on Vision AI
+              </h2>
+              
+              <p className="text-base text-[#3e4944] leading-relaxed">
+                An interconnected digital-physical nervous system: bridging citizen image capture, sub-second multimodal vision triage, decentralized Colombo workbenches, component salvage logistics, and Central Environmental Authority (CEA) compliance.
+              </p>
+            </div>
+
+            {/* Live Infrastructure Telemetry Strip */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-4 shrink-0">
+              <div className="bg-white/80 backdrop-blur-xs p-3.5 rounded-2xl border border-[#bdc9c2]/40 shadow-2xs">
+                <div className="text-[10px] font-mono uppercase tracking-wider text-[#49607e] font-semibold">Vision Accuracy</div>
+                <div className="text-xl font-black text-[#005f48] font-['Plus_Jakarta_Sans'] mt-0.5">99.4%</div>
+                <div className="text-[11px] text-[#3e4944] mt-0.5">Optical Defect Triage</div>
+              </div>
+
+              <div className="bg-white/80 backdrop-blur-xs p-3.5 rounded-2xl border border-[#bdc9c2]/40 shadow-2xs">
+                <div className="text-[10px] font-mono uppercase tracking-wider text-[#49607e] font-semibold">Inference Latency</div>
+                <div className="text-xl font-black text-[#131b2e] font-['Plus_Jakarta_Sans'] mt-0.5">&lt;800ms</div>
+                <div className="text-[11px] text-[#3e4944] mt-0.5">Gemini Multimodal</div>
+              </div>
+
+              <div className="bg-white/80 backdrop-blur-xs p-3.5 rounded-2xl border border-[#bdc9c2]/40 shadow-2xs">
+                <div className="text-[10px] font-mono uppercase tracking-wider text-[#49607e] font-semibold">Circular Hubs</div>
+                <div className="text-xl font-black text-[#007a5e] font-['Plus_Jakarta_Sans'] mt-0.5">4 Tracks</div>
+                <div className="text-[11px] text-[#3e4944] mt-0.5">Repair, Salvage, Rec, Don</div>
+              </div>
+
+              <div className="bg-white/80 backdrop-blur-xs p-3.5 rounded-2xl border border-[#bdc9c2]/40 shadow-2xs">
+                <div className="text-[10px] font-mono uppercase tracking-wider text-[#49607e] font-semibold">CEA Compliance</div>
+                <div className="text-xl font-black text-[#005f48] font-['Plus_Jakarta_Sans'] mt-0.5">100%</div>
+                <div className="text-[11px] text-[#3e4944] mt-0.5">Zero Landfill Leaks</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive Infrastructure Pillar Tabs */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+            <span className="text-xs font-bold text-[#3e4944] uppercase tracking-wider mr-2 shrink-0 font-['Plus_Jakarta_Sans']">
+              Architecture Core:
             </span>
-            <h2 className="text-3xl font-bold text-[#131b2e] tracking-tight font-['Plus_Jakarta_Sans']">
-              Enterprise Circular Infrastructure Built on Vision AI
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            {/* Feature 1 */}
-            <div className="bg-white rounded-2xl p-6 shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between border border-[#bdc9c2]/30 group">
-              <div className="flex flex-col gap-3">
-                <div className="w-12 h-12 rounded-xl bg-[#005f48]/10 flex items-center justify-center text-[#005f48] group-hover:scale-110 transition-transform">
-                  <span className="material-symbols-outlined text-2xl">visibility</span>
+            {[
+              { id: 'vision', label: '01. Multimodal Vision Diagnostics', icon: 'visibility', color: 'text-[#005f48]' },
+              { id: 'bench', label: '02. Certified Artisan Bench Network', icon: 'build', color: 'text-[#007a5e]' },
+              { id: 'salvage', label: '03. Component Salvage & E-Waste Pickup', icon: 'local_shipping', color: 'text-[#49607e]' },
+              { id: 'compliance', label: '04. CEA Manifest & ESG Ledger', icon: 'verified_user', color: 'text-[#005f48]' },
+            ].map((pillar) => {
+              const isSelected = activePillar === pillar.id;
+              return (
+                <button
+                  key={pillar.id}
+                  onClick={() => setActivePillar(pillar.id as any)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-['Plus_Jakarta_Sans'] text-xs font-bold transition-all duration-200 cursor-pointer shrink-0 border ${
+                    isSelected
+                      ? 'bg-[#005f48] text-white border-[#005f48] shadow-sm shadow-[#005f48]/20'
+                      : 'bg-white hover:bg-[#e2e7ff] text-[#3e4944] hover:text-[#131b2e] border-[#bdc9c2]/40'
+                  }`}
+                >
+                  <span className={`material-symbols-outlined text-base ${isSelected ? 'text-[#95f5d2]' : pillar.color}`}>
+                    {pillar.icon}
+                  </span>
+                  <span>{pillar.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Asymmetric Bento Showcase */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            
+            {/* Left Bento: Interactive Command Deck / Optical Telemetry HUD (7 cols) */}
+            <div className="lg:col-span-7 bg-[#0b1322] text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-800 flex flex-col justify-between relative overflow-hidden group">
+              
+              {/* Subtle tech grid background pattern */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293d15_1px,transparent_1px),linear-gradient(to_bottom,#1f293d15_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+              <div className="absolute top-0 right-0 w-80 h-80 bg-[#005f48]/20 rounded-full blur-3xl pointer-events-none"></div>
+
+              {/* HUD Header Bar */}
+              <div className="relative z-10 flex items-center justify-between pb-4 border-b border-slate-800/80">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                  </div>
+                  <span className="font-mono text-xs text-slate-400 font-semibold tracking-wider">
+                    ECLADER-OS // VISION-TELEMETRY-STREAM
+                  </span>
                 </div>
-                <h3 className="text-base font-semibold text-[#131b2e] group-hover:text-[#005f48] transition-colors font-['Plus_Jakarta_Sans']">
-                  Multimodal Gemini Vision Diagnostics
-                </h3>
-                <p className="text-sm text-[#3e4944] leading-relaxed">
-                  High-resolution spatial modeling detects cracked solder joints, capacitor bulging, battery swelling, and liquid intrusion indicators before devices are opened.
-                </p>
+
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 font-mono text-[10px] font-bold border border-emerald-500/30 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    ONLINE
+                  </span>
+                  <span className="font-mono text-[11px] text-slate-400 hidden sm:inline">
+                    Western Province Node #01
+                  </span>
+                </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-[#e2e7ff]/50">
-                <span className="font-mono text-xs text-[#005f48] flex items-center gap-1 font-medium">
-                  <span className="material-symbols-outlined text-base animate-pulse">bolt</span> Sub-second inference latency
-                </span>
+
+              {/* Central Optical Scan Visualizer */}
+              <div className="relative z-10 my-6 bg-slate-950/70 rounded-2xl border border-slate-800 p-5 space-y-4">
+                
+                {/* Simulated Target Hardware Inspection */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/60">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center justify-center shrink-0">
+                      <span className="material-symbols-outlined text-2xl text-[#95f5d2]">memory</span>
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
+                        Hardware Identified by Optical Spectrum
+                      </div>
+                      <div className="text-base font-bold text-white font-['Plus_Jakarta_Sans'] flex items-center gap-2">
+                        <span>ThinkPad T480s / Dual-Layer FR-4 Motherboard</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono">
+                          98.6% Confidence
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <span className="font-mono text-xs text-slate-400 bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800 self-start sm:self-auto">
+                    TAG: #ECL-CMB-2026-904
+                  </span>
+                </div>
+
+                {/* Multimodal Inspection Points Simulation */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  
+                  {/* Point 1: Solder Joint */}
+                  <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-slate-400">CHASSIS INTEGRITY</span>
+                      <span className="text-[10px] font-bold text-emerald-400">GRADE A</span>
+                    </div>
+                    <div className="text-xs font-bold text-slate-200">Magnesium Alloy Housing</div>
+                    <div className="text-[10px] text-slate-400">Zero structural hairline deformities</div>
+                  </div>
+
+                  {/* Point 2: Solder Thermal Stress */}
+                  <div className="p-3 rounded-xl bg-slate-900/90 border border-amber-900/40 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-amber-400">THERMAL STRESS</span>
+                      <span className="text-[10px] font-bold text-amber-300">DEFECT DETECTED</span>
+                    </div>
+                    <div className="text-xs font-bold text-slate-200">MOSFET Q201 VCore Rail</div>
+                    <div className="text-[10px] text-slate-400">Solder crack on 19V DC-in supply rail</div>
+                  </div>
+
+                  {/* Point 3: Modular Salvage */}
+                  <div className="p-3 rounded-xl bg-slate-900/90 border border-purple-900/40 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-purple-400">SALVAGE POOL</span>
+                      <span className="text-[10px] font-bold text-purple-300">HIGH YIELD</span>
+                    </div>
+                    <div className="text-xs font-bold text-slate-200">16GB DDR4 &amp; 512GB SSD</div>
+                    <div className="text-[10px] text-slate-400">LKR 28,000 salvage component value</div>
+                  </div>
+
+                </div>
+
+                {/* Real-time Triage Decision Bar */}
+                <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-800/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <span className="material-symbols-outlined text-emerald-400 text-xl">auto_fix_high</span>
+                    <div>
+                      <div className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold">
+                        Calculated Circular Pathway
+                      </div>
+                      <div className="text-xs font-bold text-white">
+                        Component Repair (Board Micro-soldering) vs. Parts Recovery Triage
+                      </div>
+                    </div>
+                  </div>
+
+                  <span className="text-[11px] font-mono font-bold text-emerald-300 bg-emerald-900/60 px-3 py-1 rounded-lg border border-emerald-600/40 shrink-0">
+                    Saves LKR 145,000 vs. Replacement
+                  </span>
+                </div>
+
               </div>
+
+              {/* HUD Footer Call to Action */}
+              <div className="relative z-10 pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-2 text-xs text-slate-400">
+                  <span className="material-symbols-outlined text-sm text-[#95f5d2]">lock_open</span>
+                  <span>End-to-end cryptographic NIST 800-88 sanitized processing</span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveScreen(4)}
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#005f48] hover:bg-[#007a5e] text-white text-xs font-bold font-['Plus_Jakarta_Sans'] transition-all duration-200 shadow-md shadow-[#005f48]/30 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <span>Test Diagnostic Scan with Your Hardware</span>
+                  <span className="material-symbols-outlined text-base">arrow_forward</span>
+                </button>
+              </div>
+
             </div>
 
-            {/* Feature 2 */}
-            <div className="bg-white rounded-2xl p-6 shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between border border-[#bdc9c2]/30 group">
-              <div className="flex flex-col gap-3">
-                <div className="w-12 h-12 rounded-xl bg-[#49607e]/10 flex items-center justify-center text-[#49607e] group-hover:scale-110 transition-transform">
-                  <span className="material-symbols-outlined text-2xl">handshake</span>
-                </div>
-                <h3 className="text-base font-semibold text-[#131b2e] group-hover:text-[#49607e] transition-colors font-['Plus_Jakarta_Sans']">
-                  Verified Colombo Technician Network
-                </h3>
-                <p className="text-sm text-[#3e4944] leading-relaxed">
-                  Micro-enterprises across Colombo 01 to 15 receive pre-diagnosed work orders, reducing intake overhead and guaranteeing transparent, ethical component pricing.
-                </p>
-              </div>
-              <div className="mt-4 pt-3 border-t border-[#e2e7ff]/50">
-                <span className="font-mono text-xs text-[#49607e] flex items-center gap-1 font-medium">
-                  <span className="material-symbols-outlined text-base">verified_user</span> Skill-indexed artisan registry
-                </span>
-              </div>
-            </div>
+            {/* Right Bento: Active Dynamic Architecture Pillar Card (5 cols) */}
+            <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
+              
+              {/* Dynamic Pillar Card */}
+              <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-[#bdc9c2]/40 space-y-5 flex-1 flex flex-col justify-between">
+                
+                <div className="space-y-4">
+                  
+                  {activePillar === 'vision' && (
+                    <>
+                      <div className="w-12 h-12 rounded-2xl bg-[#005f48]/10 text-[#005f48] flex items-center justify-center">
+                        <span className="material-symbols-outlined text-2xl">visibility</span>
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[11px] font-mono text-[#005f48] uppercase tracking-wider font-bold">Pillar 01 • Multimodal AI</span>
+                        <h3 className="text-xl font-bold text-[#131b2e] font-['Plus_Jakarta_Sans']">
+                          Gemini Computer Vision Hardware Triage
+                        </h3>
+                      </div>
+                      <p className="text-sm text-[#3e4944] leading-relaxed">
+                        Evaluates user-uploaded imagery to identify exact device chassis models, measure mechanical degradation, and detect micro-solder fractures, capacitor bulging, and battery swelling prior to technician bench intake.
+                      </p>
+                      
+                      <div className="space-y-2 pt-2">
+                        <div className="text-xs font-bold text-[#131b2e] uppercase tracking-wider font-['Plus_Jakarta_Sans']">
+                          Key Capabilities:
+                        </div>
+                        <ul className="space-y-1.5 text-xs text-[#3e4944]">
+                          <li className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm text-[#005f48]">check_circle</span>
+                            <span>Component identification down to OEM logic board revision</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm text-[#005f48]">check_circle</span>
+                            <span>Dynamic inquiry generation adapted to user-reported symptoms</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm text-[#005f48]">check_circle</span>
+                            <span>Integrated in-flight request deduplication and memory caching</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </>
+                  )}
 
-            {/* Feature 3 */}
-            <div className="bg-white rounded-2xl p-6 shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between border border-[#bdc9c2]/30 group">
-              <div className="flex flex-col gap-3">
-                <div className="w-12 h-12 rounded-xl bg-[#006040]/10 flex items-center justify-center text-[#006040] group-hover:scale-110 transition-transform">
-                  <span className="material-symbols-outlined text-2xl">co2</span>
+                  {activePillar === 'bench' && (
+                    <>
+                      <div className="w-12 h-12 rounded-2xl bg-[#007a5e]/10 text-[#007a5e] flex items-center justify-center">
+                        <span className="material-symbols-outlined text-2xl">build</span>
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[11px] font-mono text-[#007a5e] uppercase tracking-wider font-bold">Pillar 02 • Artisan Network</span>
+                        <h3 className="text-xl font-bold text-[#131b2e] font-['Plus_Jakarta_Sans']">
+                          Verified Colombo Technician Matching
+                        </h3>
+                      </div>
+                      <p className="text-sm text-[#3e4944] leading-relaxed">
+                        Connects repairable hardware with verified NVQ Level 4 bench engineers across Colombo 01 to 15. Real-time pre-intake telemetry eliminates manual diagnostics overhead and guarantees transparent, regulated pricing.
+                      </p>
+
+                      <div className="space-y-2 pt-2">
+                        <div className="text-xs font-bold text-[#131b2e] uppercase tracking-wider font-['Plus_Jakarta_Sans']">
+                          Bench Network Features:
+                        </div>
+                        <ul className="space-y-1.5 text-xs text-[#3e4944]">
+                          <li className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm text-[#007a5e]">check_circle</span>
+                            <span>Verified workbench technicians with verified NVQ certification</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm text-[#007a5e]">check_circle</span>
+                            <span>Direct quotes review and approval flow with 90-day bench warranty</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm text-[#007a5e]">check_circle</span>
+                            <span>Live custody tracking and multimeter milestone checkpoints</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </>
+                  )}
+
+                  {activePillar === 'salvage' && (
+                    <>
+                      <div className="w-12 h-12 rounded-2xl bg-[#49607e]/10 text-[#49607e] flex items-center justify-center">
+                        <span className="material-symbols-outlined text-2xl">local_shipping</span>
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[11px] font-mono text-[#49607e] uppercase tracking-wider font-bold">Pillar 03 • Logistics &amp; Salvage</span>
+                        <h3 className="text-xl font-bold text-[#131b2e] font-['Plus_Jakarta_Sans']">
+                          Parts Recovery &amp; Doorstep E-Waste Pickup
+                        </h3>
+                      </div>
+                      <p className="text-sm text-[#3e4944] leading-relaxed">
+                        Decommissions unrepairable motherboards and chassis through certified component recovery partners. Functional LCDs, DDR RAM, SSDs, and power MOSFETs are harvested to feed local repair supply chains.
+                      </p>
+
+                      <div className="space-y-2 pt-2">
+                        <div className="text-xs font-bold text-[#131b2e] uppercase tracking-wider font-['Plus_Jakarta_Sans']">
+                          Salvage Ecosystem:
+                        </div>
+                        <ul className="space-y-1.5 text-xs text-[#3e4944]">
+                          <li className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm text-[#49607e]">check_circle</span>
+                            <span>Doorstep collection bookings with Colombo courier dispatch</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm text-[#49607e]">check_circle</span>
+                            <span>Salvage credit vouchers redeemable for future repair discounts</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm text-[#49607e]">check_circle</span>
+                            <span>DoD 5220.22-M cryptographic data sanitization certification</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </>
+                  )}
+
+                  {activePillar === 'compliance' && (
+                    <>
+                      <div className="w-12 h-12 rounded-2xl bg-[#005f48]/10 text-[#005f48] flex items-center justify-center">
+                        <span className="material-symbols-outlined text-2xl">verified_user</span>
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[11px] font-mono text-[#005f48] uppercase tracking-wider font-bold">Pillar 04 • Compliance &amp; ESG</span>
+                        <h3 className="text-xl font-bold text-[#131b2e] font-['Plus_Jakarta_Sans']">
+                          CEA Manifesting &amp; Real-time ESG Ledger
+                        </h3>
+                      </div>
+                      <p className="text-sm text-[#3e4944] leading-relaxed">
+                        100% compliant with Sri Lanka's Central Environmental Authority (CEA). Generates verifiable digital e-waste manifests and audits Scope 3 emissions avoided, mass diverted, and precious minerals recovered.
+                      </p>
+
+                      <div className="space-y-2 pt-2">
+                        <div className="text-xs font-bold text-[#131b2e] uppercase tracking-wider font-['Plus_Jakarta_Sans']">
+                          Compliance Deliverables:
+                        </div>
+                        <ul className="space-y-1.5 text-xs text-[#3e4944]">
+                          <li className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm text-[#005f48]">check_circle</span>
+                            <span>Official CEA licensed hazardous e-waste destruction manifests</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm text-[#005f48]">check_circle</span>
+                            <span>Precious mineral index tracing: Gold (Au), Silver, Copper, Palladium</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm text-[#005f48]">check_circle</span>
+                            <span>Downloadable Circular Impact Certificates with cryptographic hash</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </>
+                  )}
+
                 </div>
-                <h3 className="text-base font-semibold text-[#131b2e] group-hover:text-[#006040] transition-colors font-['Plus_Jakarta_Sans']">
-                  Measurable E-Waste & CO₂e Ledger
-                </h3>
-                <p className="text-sm text-[#3e4944] leading-relaxed">
-                  Trace landfill diversion weights, scarce mineral recovery indices (Gold, Copper, Palladium), and audited Scope 3 carbon savings directly on municipal dashboards.
-                </p>
+
+                {/* Direct Pathway Link from Active Pillar */}
+                <div className="pt-4 border-t border-[#e2e7ff] flex items-center justify-between">
+                  <span className="text-xs font-mono text-[#3e4944]">
+                    {activePillar === 'vision' && 'Route: /assess-device'}
+                    {activePillar === 'bench' && 'Route: /technicians'}
+                    {activePillar === 'salvage' && 'Route: /parts-recovery'}
+                    {activePillar === 'compliance' && 'Route: /recycling-agencies'}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (activePillar === 'vision') setActiveScreen(4);
+                      else if (activePillar === 'bench') setActiveScreen(7);
+                      else if (activePillar === 'salvage') setActiveScreen(14);
+                      else if (activePillar === 'compliance') setActiveScreen(13);
+                    }}
+                    className="text-xs font-bold text-[#005f48] hover:text-[#007a5e] flex items-center gap-1 font-['Plus_Jakarta_Sans'] cursor-pointer group"
+                  >
+                    <span>
+                      {activePillar === 'vision' && 'Start Optical Assessment'}
+                      {activePillar === 'bench' && 'Find Bench Technicians'}
+                      {activePillar === 'salvage' && 'Request E-Waste Pickup'}
+                      {activePillar === 'compliance' && 'Browse CEA Recyclers'}
+                    </span>
+                    <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">
+                      arrow_forward
+                    </span>
+                  </button>
+                </div>
+
               </div>
-              <div className="mt-4 pt-3 border-t border-[#e2e7ff]/50">
-                <span className="font-mono text-xs text-[#006040] flex items-center gap-1 font-medium">
-                  <span className="material-symbols-outlined text-base">analytics</span> Real-time Ministry of Env reporting
-                </span>
+
+              {/* Mini Quick-Launch Cards Row */}
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setActiveScreen(15)}
+                  className="p-3.5 rounded-2xl bg-white hover:bg-amber-50/60 border border-[#bdc9c2]/40 hover:border-amber-300 text-left transition-all cursor-pointer shadow-2xs group"
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="material-symbols-outlined text-amber-600 text-lg">volunteer_activism</span>
+                    <span className="material-symbols-outlined text-sm text-slate-400 group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                  </div>
+                  <div className="text-xs font-bold text-[#131b2e] font-['Plus_Jakarta_Sans']">School Donations</div>
+                  <div className="text-[11px] text-[#3e4944] mt-0.5">Equip rural IT labs</div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveScreen(12)}
+                  className="p-3.5 rounded-2xl bg-white hover:bg-emerald-50/60 border border-[#bdc9c2]/40 hover:border-emerald-300 text-left transition-all cursor-pointer shadow-2xs group"
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="material-symbols-outlined text-[#005f48] text-lg">workspace_premium</span>
+                    <span className="material-symbols-outlined text-sm text-slate-400 group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                  </div>
+                  <div className="text-xs font-bold text-[#131b2e] font-['Plus_Jakarta_Sans']">Impact Ledger</div>
+                  <div className="text-[11px] text-[#3e4944] mt-0.5">Audited CO₂e savings</div>
+                </button>
               </div>
+
             </div>
 
           </div>
+
+          {/* 4-Stage Architectural Flow Row */}
+          <div className="pt-4 border-t border-[#bdc9c2]/30">
+            <div className="text-xs font-bold uppercase tracking-wider text-[#3e4944] font-['Plus_Jakarta_Sans'] mb-4">
+              Autonomous Circular Triage Pipeline
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              
+              <div className="bg-white p-4 rounded-2xl border border-[#bdc9c2]/30 shadow-2xs space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-[#005f48]">STEP 01</span>
+                  <span className="material-symbols-outlined text-[#005f48] text-lg">photo_camera</span>
+                </div>
+                <h4 className="text-sm font-bold text-[#131b2e] font-['Plus_Jakarta_Sans']">Optical Ingestion</h4>
+                <p className="text-xs text-[#3e4944] leading-relaxed">
+                  High-fidelity sensor scans identify device casing, ports, battery condition, and surface anomalies.
+                </p>
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl border border-[#bdc9c2]/30 shadow-2xs space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-[#007a5e]">STEP 02</span>
+                  <span className="material-symbols-outlined text-[#007a5e] text-lg">quiz</span>
+                </div>
+                <h4 className="text-sm font-bold text-[#131b2e] font-['Plus_Jakarta_Sans']">Contextual Inquiries</h4>
+                <p className="text-xs text-[#3e4944] leading-relaxed">
+                  Gemini formulates dynamic questions to confirm power-on rails, sound/vibration, and data status.
+                </p>
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl border border-[#bdc9c2]/30 shadow-2xs space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-[#49607e]">STEP 03</span>
+                  <span className="material-symbols-outlined text-[#49607e] text-lg">alt_route</span>
+                </div>
+                <h4 className="text-sm font-bold text-[#131b2e] font-['Plus_Jakarta_Sans']">Deterministic Routing</h4>
+                <p className="text-xs text-[#3e4944] leading-relaxed">
+                  Calculates highest value preservation: Repair vs. Parts Salvage vs. CEA Demanufacturing vs. School Donation.
+                </p>
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl border border-[#bdc9c2]/30 shadow-2xs space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-[#005f48]">STEP 04</span>
+                  <span className="material-symbols-outlined text-[#005f48] text-lg">inventory_2</span>
+                </div>
+                <h4 className="text-sm font-bold text-[#131b2e] font-['Plus_Jakarta_Sans']">Custody &amp; ESG Proof</h4>
+                <p className="text-xs text-[#3e4944] leading-relaxed">
+                  Issues tamper-evident pickup tickets, technician work-orders, and municipal carbon certificates.
+                </p>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </section>
 

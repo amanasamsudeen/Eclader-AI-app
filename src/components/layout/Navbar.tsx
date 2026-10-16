@@ -75,6 +75,30 @@ export const Navbar: React.FC = () => {
               Track Devices
             </button>
             <button
+              onClick={() => setActiveScreen(14)}
+              className={`px-3 py-1.5 transition-colors rounded-lg font-semibold cursor-pointer ${
+                activeScreen === 14 ? 'bg-[#e2e7ff] text-[#131b2e]' : 'text-[#3e4944] hover:bg-[#e2e7ff] hover:text-[#131b2e]'
+              }`}
+            >
+              Parts Recovery
+            </button>
+            <button
+              onClick={() => setActiveScreen(13)}
+              className={`px-3 py-1.5 transition-colors rounded-lg font-semibold cursor-pointer ${
+                activeScreen === 13 ? 'bg-[#e2e7ff] text-[#131b2e]' : 'text-[#3e4944] hover:bg-[#e2e7ff] hover:text-[#131b2e]'
+              }`}
+            >
+              Recycling
+            </button>
+            <button
+              onClick={() => setActiveScreen(15)}
+              className={`px-3 py-1.5 transition-colors rounded-lg font-semibold cursor-pointer ${
+                activeScreen === 15 ? 'bg-[#e2e7ff] text-[#131b2e]' : 'text-[#3e4944] hover:bg-[#e2e7ff] hover:text-[#131b2e]'
+              }`}
+            >
+              Donations
+            </button>
+            <button
               onClick={() => setActiveScreen(7)}
               className={`px-3 py-1.5 transition-colors rounded-lg font-semibold cursor-pointer ${
                 activeScreen === 7 ? 'bg-[#e2e7ff] text-[#131b2e]' : 'text-[#3e4944] hover:bg-[#e2e7ff] hover:text-[#131b2e]'
@@ -191,6 +215,24 @@ export const Navbar: React.FC = () => {
             className="w-full text-left p-2 rounded-lg text-sm font-semibold hover:bg-[#e2e7ff]"
           >
             Track Devices
+          </button>
+          <button
+            onClick={() => { setActiveScreen(14); setIsMobileMenuOpen(false); }}
+            className="w-full text-left p-2 rounded-lg text-sm font-semibold hover:bg-[#e2e7ff]"
+          >
+            Parts Recovery (E-Waste Pickup)
+          </button>
+          <button
+            onClick={() => { setActiveScreen(13); setIsMobileMenuOpen(false); }}
+            className="w-full text-left p-2 rounded-lg text-sm font-semibold hover:bg-[#e2e7ff]"
+          >
+            Recycling Agencies (CEA Intake)
+          </button>
+          <button
+            onClick={() => { setActiveScreen(15); setIsMobileMenuOpen(false); }}
+            className="w-full text-left p-2 rounded-lg text-sm font-semibold hover:bg-[#e2e7ff]"
+          >
+            Community Donations (Schools/NGOs)
           </button>
           <button
             onClick={() => { setActiveScreen(7); setIsMobileMenuOpen(false); }}

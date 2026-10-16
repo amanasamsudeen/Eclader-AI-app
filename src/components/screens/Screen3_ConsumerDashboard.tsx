@@ -15,12 +15,16 @@ import {
   AlertTriangle,
   ChevronRight,
   Sparkles,
-  ExternalLink
+  ExternalLink,
+  Layers,
+  Recycle,
+  HeartHandshake,
+  Truck
 } from 'lucide-react';
 import { DeviceStatus } from '../../types';
 
 export const Screen3_ConsumerDashboard: React.FC = () => {
-  const { devices, currentUser, setActiveDeviceId, setActiveScreen } = useApp();
+  const { devices, currentUser, pickupRequests, setActiveDeviceId, setActiveScreen } = useApp();
   
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -90,7 +94,13 @@ export const Screen3_ConsumerDashboard: React.FC = () => {
       setActiveScreen(12); // Final outcome certificate
     } else if (dev.status === 'ai_assessed' && !dev.selectedRoute) {
       setActiveScreen(5); // AI Assessment & simple questions triage
-    } else if (dev.status === 'route_selected' && !dev.assignedTechnicianId) {
+    } else if (dev.selectedRoute === 'parts_recovery') {
+      setActiveScreen(14); // Screen 14: Parts Recovery E-Waste Pickup
+    } else if (dev.selectedRoute === 'recycling') {
+      setActiveScreen(13); // Screen 13: Recycling Agencies Pickup
+    } else if (dev.selectedRoute === 'donation') {
+      setActiveScreen(15); // Screen 15: Donation Organizations
+    } else if (dev.status === 'route_selected' && (!dev.assignedTechnicianId || dev.selectedRoute === 'repair')) {
       setActiveScreen(7); // Tech matching
     } else {
       setActiveScreen(8); // Device tracking timeline
@@ -176,7 +186,121 @@ export const Screen3_ConsumerDashboard: React.FC = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-8">
+
+        {/* Circular Pathways & Services Hub Quick Access */}
+        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-xs space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
+            <div>
+              <h2 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-emerald-600" />
+                <span>Western Province Circular Economy Network</span>
+              </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Direct access to certified repair benches, component salvage pools, CEA recycling plants, and school donation initiatives.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setActiveScreen(4)}
+              className="px-3.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg border border-emerald-200 transition-colors cursor-pointer self-start sm:self-auto"
+            >
+              + AI Triage New Device
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            {/* 1. Component Repair */}
+            <div 
+              onClick={() => setActiveScreen(7)}
+              className="p-4 rounded-2xl border border-blue-100 bg-blue-50/40 hover:bg-blue-50 hover:border-blue-300 transition-all cursor-pointer group flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+                  <Wrench className="w-5 h-5" />
+                </div>
+                <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+                  1. Component Repair
+                </h3>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                  Certified NVQ Level 4 technicians for board micro-soldering, modular panels, and battery renewal.
+                </p>
+              </div>
+              <div className="pt-3 mt-2 border-t border-blue-100/60 flex items-center justify-between text-xs font-bold text-blue-700">
+                <span>Find Technicians</span>
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+
+            {/* 2. Parts Recovery */}
+            <div 
+              onClick={() => setActiveScreen(14)}
+              className="p-4 rounded-2xl border border-purple-100 bg-purple-50/40 hover:bg-purple-50 hover:border-purple-300 transition-all cursor-pointer group flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+                  <Layers className="w-5 h-5" />
+                </div>
+                <h3 className="text-sm font-bold text-slate-900 group-hover:text-purple-700 transition-colors">
+                  2. Parts Recovery
+                </h3>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                  Request e-waste pickup for component recovery. Harvest LCDs, RAM, SSDs, and ICs for salvage credits.
+                </p>
+              </div>
+              <div className="pt-3 mt-2 border-t border-purple-100/60 flex items-center justify-between text-xs font-bold text-purple-700">
+                <span>Recovery Partners</span>
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+
+            {/* 3. Responsible Recycling */}
+            <div 
+              onClick={() => setActiveScreen(13)}
+              className="p-4 rounded-2xl border border-emerald-100 bg-emerald-50/40 hover:bg-emerald-50 hover:border-emerald-300 transition-all cursor-pointer group flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+                  <Recycle className="w-5 h-5" />
+                </div>
+                <h3 className="text-sm font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                  3. Responsible Recycling
+                </h3>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                  Central Environmental Authority (CEA) licensed agencies. Zero-landfill hazardous demanufacturing.
+                </p>
+              </div>
+              <div className="pt-3 mt-2 border-t border-emerald-100/60 flex items-center justify-between text-xs font-bold text-emerald-700">
+                <span>Recycling Agencies</span>
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+
+            {/* 4. Community Donation */}
+            <div 
+              onClick={() => setActiveScreen(15)}
+              className="p-4 rounded-2xl border border-amber-100 bg-amber-50/40 hover:bg-amber-50 hover:border-amber-300 transition-all cursor-pointer group flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+                  <HeartHandshake className="w-5 h-5" />
+                </div>
+                <h3 className="text-sm font-bold text-slate-900 group-hover:text-amber-700 transition-colors">
+                  4. Community Donation
+                </h3>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                  Equip rural school computer labs and youth vocational hubs. Doorstep pickup or verified drop-off.
+                </p>
+              </div>
+              <div className="pt-3 mt-2 border-t border-amber-100/60 flex items-center justify-between text-xs font-bold text-amber-700">
+                <span>Donation Hubs</span>
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+
+          </div>
+        </div>
         
         {/* Search & Filter Controls */}
         <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">

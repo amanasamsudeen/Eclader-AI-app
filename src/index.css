@@ -54,8 +54,45 @@
   100% { transform: translateX(200%); }
 }
 
+@keyframes laserSweep {
+  0% {
+    top: 2%;
+    opacity: 0.85;
+  }
+  50% {
+    top: 96%;
+    opacity: 1;
+  }
+  100% {
+    top: 2%;
+    opacity: 0.85;
+  }
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.18; }
+  50% { opacity: 0.45; }
+}
+
+@keyframes targetReticle {
+  0%, 100% { transform: scale(1); border-color: rgba(16, 185, 129, 0.7); }
+  50% { transform: scale(1.015); border-color: rgba(52, 211, 153, 1); }
+}
+
 .animate-scanline {
   animation: scanline 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-laser-sweep {
+  animation: laserSweep 2.4s ease-in-out infinite;
+}
+
+.animate-grid-pulse {
+  animation: gridPulse 2.5s ease-in-out infinite;
+}
+
+.animate-reticle {
+  animation: targetReticle 2s ease-in-out infinite;
 }
 
 .animate-ping-slow {

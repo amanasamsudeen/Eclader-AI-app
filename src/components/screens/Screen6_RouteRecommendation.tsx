@@ -185,10 +185,15 @@ export const Screen6_RouteRecommendation: React.FC = () => {
   const handleConfirmRoute = async () => {
     await setDeviceRoute(currentDevice.id, selectedRoute);
     
-    // Route logic:
-    // If repair or parts recovery: advance to technician matching
-    if (selectedRoute === 'repair' || selectedRoute === 'parts_recovery') {
-      setActiveScreen(7); // Screen 7: Technician Matching
+    // Exact Pathway Routing:
+    if (selectedRoute === 'repair') {
+      setActiveScreen(7); // Screen 7: Technician Matching & Collection
+    } else if (selectedRoute === 'parts_recovery') {
+      setActiveScreen(14); // Screen 14: Parts Recovery E-Waste Pickup
+    } else if (selectedRoute === 'recycling') {
+      setActiveScreen(13); // Screen 13: CEA Recycling Agencies Pickup
+    } else if (selectedRoute === 'donation') {
+      setActiveScreen(15); // Screen 15: Community Hardware Donation
     } else {
       setActiveScreen(8); // Screen 8: Device Tracking Timeline
     }
@@ -373,9 +378,11 @@ export const Screen6_RouteRecommendation: React.FC = () => {
               {selectedRoute.replace('_', ' ')}
             </div>
             <p className="text-xs text-slate-600">
-              {selectedRoute === 'repair' || selectedRoute === 'parts_recovery'
-                ? 'Next step will match you with certified local technicians in Western Province.'
-                : 'Will initialize logistics and dispatch tracking.'}
+              {selectedRoute === 'repair' && 'Next step matches you with certified bench technicians for doorstep device collection and inspection.'}
+              {selectedRoute === 'parts_recovery' && 'Next step connects you with verified recovery partners to request e-waste pickup for component salvage.'}
+              {selectedRoute === 'recycling' && 'Next step allows you to select a CEA-licensed recycling agency and schedule e-waste collection.'}
+              {selectedRoute === 'donation' && 'Next step allows you to select an educational NGO to request doorstep pickup or generate a drop-off voucher.'}
+              {selectedRoute === 'reuse_resale' && 'Next step prepares certified data sanitization and domestic resale grading.'}
             </p>
           </div>
 

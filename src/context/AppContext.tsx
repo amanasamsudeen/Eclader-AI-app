@@ -1,6 +1,28 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { CircularRoute, DeviceRecord, InspectionQuote, TechnicianProfile, User, UserRole } from '../types';
-import { INITIAL_DEVICES, INITIAL_USERS, TECHNICIANS_LIST } from '../data/mockData';
+import { 
+  CircularRoute, 
+  DeviceRecord, 
+  InspectionQuote, 
+  TechnicianProfile, 
+  User, 
+  UserRole,
+  PickupRequest,
+  PickupRequestStatus,
+  RecyclingAgency,
+  PartsRecoveryPartner,
+  DonationOrganization,
+  ResaleListing
+} from '../types';
+import { 
+  INITIAL_DEVICES, 
+  INITIAL_USERS, 
+  TECHNICIANS_LIST,
+  RECYCLING_AGENCIES_LIST,
+  PARTS_RECOVERY_PARTNERS_LIST,
+  DONATION_ORGS_LIST,
+  SAMPLE_PICKUP_REQUESTS,
+  SAMPLE_RESALE_LISTINGS
+} from '../data/mockData';
 import { auth, db, handleFirestoreError, OperationType } from '../firebase';
 import { 
   onAuthStateChanged, 
@@ -34,6 +56,22 @@ interface AppContextType {
   activeScreen: number;
   setActiveScreen: (screen: number) => void;
   technicians: TechnicianProfile[];
+  recyclingAgencies: RecyclingAgency[];
+  partsRecoveryPartners: PartsRecoveryPartner[];
+  donationOrganizations: DonationOrganization[];
+  pickupRequests: PickupRequest[];
+  resaleListings: ResaleListing[];
+  addPickupRequest: (req: PickupRequest) => Promise<void>;
+  updatePickupRequestStatus: (
+    requestId: string, 
+    status: PickupRequestStatus, 
+    note?: string, 
+    actor?: string, 
+    confirmedDate?: string, 
+    collectorName?: string
+  ) => Promise<void>;
+  addResaleListing: (listing: ResaleListing) => Promise<void>;
+  updateResaleListingStatus: (listingId: string, status: ResaleListing['status']) => Promise<void>;
   loginWithEmail: (email: string, pass: string) => Promise<void>;
   registerWithEmail: (email: string, pass: string, name: string, role: UserRole, district: string, phone: string, businessName?: string, certNumber?: string) => Promise<void>;
   loginWithGoogle: (role?: UserRole) => Promise<void>;
@@ -53,10 +91,16 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const STORAGE_KEY_DEVICES = 'eclader_devices_v3';
 const STORAGE_KEY_USER = 'eclader_user_v3';
+const STORAGE_KEY_PICKUP_REQUESTS = 'eclader_pickup_requests_v3';
+const STORAGE_KEY_RESALE_LISTINGS = 'eclader_resale_listings_v3';
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [users] = useState<User[]>(INITIAL_USERS);
   const [technicians] = useState<TechnicianProfile[]>(TECHNICIANS_LIST);
+  const [recyclingAgencies] = useState<RecyclingAgency[]>(RECYCLING_AGENCIES_LIST);
+  const [partsRecoveryPartners] = useState<PartsRecoveryPartner[]>(PARTS_RECOVERY_PARTNERS_LIST);
+  const [donationOrganizations] = useState<DonationOrganization[]>(DONATION_ORGS_LIST);
+
   const [firebaseAuthUser, setFirebaseAuthUser] = useState<FirebaseUser | null>(null);
   const [authLoading, setAuthLoading] = useState<boolean>(true);
 
@@ -78,6 +122,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       console.warn('Failed to parse saved devices:', e);
     }
     return INITIAL_DEVICES;
+  });
+
+  const [pickupRequests, setPickupRequests] = useState<PickupRequest[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_PICKUP_REQUESTS);
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.warn('Failed to parse saved pickup requests:', e);
+    }
+    return SAMPLE_PICKUP_REQUESTS;
+  });
+
+  const [resaleListings, setResaleListings] = useState<ResaleListing[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_RESALE_LISTINGS);
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.warn('Failed to parse saved resale listings:', e);
+    }
+    return SAMPLE_RESALE_LISTINGS;
   });
 
   const [activeDeviceId, setActiveDeviceId] = useState<string | null>(() => {
@@ -102,6 +166,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       console.warn('LocalStorage error:', e);
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY_PICKUP_REQUESTS, JSON.stringify(pickupRequests));
+    } catch (e) {
+      console.warn('LocalStorage error:', e);
+    }
+  }, [pickupRequests]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY_RESALE_LISTINGS, JSON.stringify(resaleListings));
+    } catch (e) {
+      console.warn('LocalStorage error:', e);
+    }
+  }, [resaleListings]);
 
   // Firebase Auth listener
   useEffect(() => {
@@ -732,10 +812,191 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  // ============================================================================
+  // Circular E-Waste Pickup & Collection Request Management
+  // ============================================================================
+  const addPickupRequest = async (newReq: PickupRequest) => {
+    // Avoid duplicate requests for the same device & pathway
+    setPickupRequests((prev) => {
+      const exists = prev.some((r) => r.id === newReq.id);
+      if (exists) return prev;
+      return [newReq, ...prev];
+    });
+
+    // Update the associated device record with tracking milestone & selected route
+    const pathwayRouteMap: Record<string, CircularRoute> = {
+      recycling: 'recycling',
+      parts_recovery: 'parts_recovery',
+      donation: 'donation',
+      repair: 'repair',
+      resale: 'reuse_resale',
+    };
+
+    const targetRoute = pathwayRouteMap[newReq.pathwayType] || 'recycling';
+
+    setDevices((prev) =>
+      prev.map((d) => {
+        if (d.id !== newReq.deviceId) return d;
+        const newMilestone = {
+          id: `ms-req-${Date.now()}`,
+          title: `E-Waste Request: ${newReq.providerName}`,
+          description: `Dispatched ${newReq.pathwayType.replace('_', ' ')} request #${newReq.id}. Preferred date: ${newReq.preferredPickupDate}.`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          completed: true,
+          actor: currentUser.name,
+        };
+        return {
+          ...d,
+          selectedRoute: targetRoute,
+          status: 'route_selected',
+          milestones: [...(d.milestones || []), newMilestone],
+        };
+      })
+    );
+
+    // Persist to Firestore if online
+    if (auth.currentUser) {
+      try {
+        const reqDocRef = doc(db, 'pickupRequests', newReq.id);
+        await setDoc(reqDocRef, {
+          ...newReq,
+          ownerUid: auth.currentUser.uid,
+          updatedAt: new Date().toISOString(),
+        });
+
+        await setDoc(doc(db, 'deviceStatusHistory', `hist-req-${Date.now()}`), {
+          deviceId: newReq.deviceId,
+          status: newReq.status,
+          description: `Collection request #${newReq.id} submitted to ${newReq.providerName}`,
+          updatedBy: currentUser.name,
+          createdAt: new Date().toISOString(),
+        });
+      } catch (err) {
+        console.warn('Firestore pickup request creation warning:', err);
+      }
+    }
+  };
+
+  const updatePickupRequestStatus = async (
+    requestId: string, 
+    status: PickupRequestStatus, 
+    note?: string, 
+    actor?: string, 
+    confirmedDate?: string, 
+    collectorName?: string
+  ) => {
+    let affectedDeviceId: string | null = null;
+    let pathwayType: string = 'recycling';
+
+    setPickupRequests((prev) =>
+      prev.map((req) => {
+        if (req.id !== requestId) return req;
+        affectedDeviceId = req.deviceId;
+        pathwayType = req.pathwayType;
+
+        const newHistoryItem = {
+          status,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          note: note || `Status progressed to ${status.replace('_', ' ')}.`,
+          actor: actor || currentUser.name,
+        };
+
+        return {
+          ...req,
+          status,
+          confirmedPickupDate: confirmedDate || req.confirmedPickupDate,
+          assignedCollectorName: collectorName || req.assignedCollectorName,
+          updatedAt: new Date().toISOString(),
+          statusHistory: [...(req.statusHistory || []), newHistoryItem],
+        };
+      })
+    );
+
+    // If device is marked collected or completed, update device milestones and status
+    if (affectedDeviceId) {
+      setDevices((prev) =>
+        prev.map((d) => {
+          if (d.id !== affectedDeviceId) return d;
+          let newStatus = d.status;
+          if (status === 'collected') {
+            newStatus = 'physical_inspection_pending';
+          } else if (status === 'completed' || status === 'received_at_facility') {
+            newStatus = pathwayType === 'recycling' ? 'recycled' : 'completed';
+          }
+
+          const ms = {
+            id: `ms-prog-${Date.now()}`,
+            title: `Collection Progress: ${status.toUpperCase().replace('_', ' ')}`,
+            description: note || `Milestone verified by authorized circular provider.`,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            completed: true,
+            actor: actor || currentUser.name,
+          };
+
+          return {
+            ...d,
+            status: newStatus,
+            milestones: [...(d.milestones || []), ms],
+          };
+        })
+      );
+    }
+
+    if (auth.currentUser) {
+      try {
+        const reqDocRef = doc(db, 'pickupRequests', requestId);
+        await updateDoc(reqDocRef, {
+          status,
+          confirmedPickupDate: confirmedDate || null,
+          assignedCollectorName: collectorName || null,
+          updatedAt: new Date().toISOString(),
+        });
+      } catch (err) {
+        console.warn('Firestore update pickup status warning:', err);
+      }
+    }
+  };
+
+  const addResaleListing = async (newListing: ResaleListing) => {
+    setResaleListings((prev) => [newListing, ...prev]);
+
+    setDevices((prev) =>
+      prev.map((d) => {
+        if (d.id !== newListing.deviceId) return d;
+        return {
+          ...d,
+          selectedRoute: 'reuse_resale',
+          status: 'route_selected',
+          milestones: [
+            ...(d.milestones || []),
+            {
+              id: `ms-lst-${Date.now()}`,
+              title: 'Published on Circular Resale Marketplace',
+              description: `Asking price: LKR ${newListing.askingPriceLkr.toLocaleString()}. Cryptographically data sanitized.`,
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              completed: true,
+              actor: currentUser.name,
+            },
+          ],
+        };
+      })
+    );
+  };
+
+  const updateResaleListingStatus = async (listingId: string, status: ResaleListing['status']) => {
+    setResaleListings((prev) =>
+      prev.map((item) => (item.id === listingId ? { ...item, status, updatedAt: new Date().toISOString() } : item))
+    );
+  };
+
   const resetDemoData = () => {
     localStorage.removeItem(STORAGE_KEY_DEVICES);
     localStorage.removeItem(STORAGE_KEY_USER);
+    localStorage.removeItem(STORAGE_KEY_PICKUP_REQUESTS);
+    localStorage.removeItem(STORAGE_KEY_RESALE_LISTINGS);
     setDevices(INITIAL_DEVICES);
+    setPickupRequests(SAMPLE_PICKUP_REQUESTS);
+    setResaleListings(SAMPLE_RESALE_LISTINGS);
     setCurrentUser(INITIAL_USERS[0]);
     setActiveDeviceId(INITIAL_DEVICES[0].id);
     setActiveScreen(1);
@@ -755,6 +1016,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         activeScreen,
         setActiveScreen,
         technicians,
+        recyclingAgencies,
+        partsRecoveryPartners,
+        donationOrganizations,
+        pickupRequests,
+        resaleListings,
+        addPickupRequest,
+        updatePickupRequestStatus,
+        addResaleListing,
+        updateResaleListingStatus,
         loginWithEmail,
         registerWithEmail,
         loginWithGoogle,

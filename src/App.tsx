@@ -16,6 +16,9 @@ import { Screen9_TechnicianDashboard } from './components/screens/Screen9_Techni
 import { Screen10_PhysicalInspection } from './components/screens/Screen10_PhysicalInspection';
 import { Screen11_QuoteReview } from './components/screens/Screen11_QuoteReview';
 import { Screen12_FinalOutcome } from './components/screens/Screen12_FinalOutcome';
+import { Screen13_RecyclingAgencies } from './components/screens/Screen13_RecyclingAgencies';
+import { Screen14_PartsRecoveryPickup } from './components/screens/Screen14_PartsRecoveryPickup';
+import { Screen15_DonationPrograms } from './components/screens/Screen15_DonationPrograms';
 
 const ScreenRouter: React.FC = () => {
   const { activeScreen } = useApp();
@@ -51,6 +54,12 @@ const ScreenRouter: React.FC = () => {
         return <Screen11_QuoteReview />;
       case 12:
         return <Screen12_FinalOutcome />;
+      case 13:
+        return <Screen13_RecyclingAgencies />;
+      case 14:
+        return <Screen14_PartsRecoveryPickup />;
+      case 15:
+        return <Screen15_DonationPrograms />;
       default:
         return <Screen1_Landing />;
     }
